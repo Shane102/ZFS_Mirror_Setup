@@ -11,7 +11,8 @@ DISK_ID_1="ata-ST6000DM003-2CY186_ZCT25Q8C"
 DISK_ID_2="ata-ST6000DM003-2CY186_ZCT25QFT"
 
 # Name for your new ZFS pool (e.g., 'two_tb_pool' or 'six_tb_pool')
-POOL_NAME="6tb_zfs_pool"
+# This has to start with a letter and can contain letters, numbers, and underscores.
+POOL_NAME="SG6tb_zfs_pool"
 
 ########## End of Variables ########
 
