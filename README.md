@@ -1,6 +1,18 @@
 # ZFS Mirror Setup Script
 
-This script automates the process of securely wiping two disks and creating a mirrored ZFS pool on Linux systems (Debian/Ubuntu). It is designed for advanced users who understand the risks of data loss and want a repeatable, safe, and robust way to set up a ZFS mirror.
+This script automates the process of securely wiping two disks and creating a mirrored ZFS pool on Linux systems (Debian/Ubuntu). It is gives a repeatable, safe, and robust way to set up a ZFS mirror.
+
+## Note
+  
+If you have previously used the disks on this system (for example, as part of another ZFS pool, RAID array, or with other filesystems such as EXT4), you may need to manually remove old mount points or entries from `/etc/fstab` and `/etc/zfs/zfs-list.cache/` to avoid conflicts.  
+- Check for existing mount points with `mount | grep /dev/sd` or `lsblk`.
+- Remove or comment out any related lines in `/etc/fstab` that reference the old disks, mount points, or EXT4 filesystems.
+- If ZFS pools were previously imported, run `zpool export <old_pool_name>` to cleanly remove them.
+- For EXT4 or other filesystems, unmount them with `umount <mount_point>` before proceeding.
+- Delete any stale directories in `/mnt`, `/media`, or your custom mount locations if they are no longer needed.
+
+This ensures a clean environment for the new ZFS mirror setup.
+
 
 ## Features
 - **Safety checks**: Prompts for confirmation and verifies disk existence before proceeding.
@@ -14,7 +26,7 @@ This script automates the process of securely wiping two disks and creating a mi
 
 1. **Edit the script**: Open `ZFS_mirror_setup.sh` and set the following variables at the top:
    - `DISK_ID_1` and `DISK_ID_2`: The `/dev/disk/by-id/` names of your two disks. Use `ls -l /dev/disk/by-id/` to find them.
-   - `POOL_NAME`: The name for your new ZFS pool (e.g., `6tb_zfs_pool`).
+   - `POOL_NAME`: The name for your new ZFS pool (e.g., `SG6tb_zfs_pool`). This must start with a letter.
 
 2. **Run the script**:
    ```bash
@@ -41,7 +53,7 @@ This script automates the process of securely wiping two disks and creating a mi
 ```bash
 DISK_ID_1="ata-ST6000DM003-2CY186_ZCT25Q8C"
 DISK_ID_2="ata-ST6000DM003-2CY186_ZCT25QFT"
-POOL_NAME="6tb_zfs_pool"
+POOL_NAME="SG6tb_zfs_pool"
 ```
 
 ## Requirements
