@@ -107,3 +107,18 @@ echo "ZFS mirror setup complete!"
 echo "Your new ZFS pool '$POOL_NAME' is mounted at '/$POOL_NAME'."
 echo "You can start storing data in '/$POOL_NAME/data'."
 echo "Remember to regularly check 'sudo zpool status' for disk health."
+
+# --- Step 8: Create a symlink to the ZFS dataset in the user's home directory ---
+read -p "Do you want to create a symlink to the ZFS dataset in your home directory? (y/n): " CREATE_SYMLINK
+if [[ "$CREATE_SYMLINK" =~ ^[Yy]$ ]]; then
+    SYMLINK_PATH="$HOME/$POOL_NAME/data"
+    TARGET_PATH="/$POOL_NAME/data"
+    if [ -L "$SYMLINK_PATH" ] || [ -e "$SYMLINK_PATH" ]; then
+        echo "Symlink or file $SYMLINK_PATH already exists. Skipping symlink creation."
+    else
+        echo "Creating symlink: $SYMLINK_PATH -> $TARGET_PATH"
+        ln -s "$TARGET_PATH" "$SYMLINK_PATH"
+    fi
+else
+    echo "Skipping symlink creation."
+fi
